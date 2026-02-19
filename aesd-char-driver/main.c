@@ -23,7 +23,7 @@
 int aesd_major =   1; // use dynamic major
 int aesd_minor =   0;
 
-MODULE_AUTHOR("Eduard Grueso"); /** TODO: fill in your name **/
+MODULE_AUTHOR("Eduard Grueso");
 MODULE_LICENSE("Dual BSD/GPL");
 
 struct aesd_dev aesd_device;
@@ -32,8 +32,7 @@ int aesd_open(struct inode *inode, struct file *filp)
 {
     PDEBUG("open");
     
-    dev = container_of(inode->i_cdev, struct aesd_dev, cdev);
-    filp->private_data = dev;
+    filp->private_data = container_of(inode->i_cdev, struct aesd_dev, cdev);
 
     return 0;
 }
