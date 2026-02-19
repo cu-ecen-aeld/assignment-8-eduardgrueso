@@ -95,7 +95,6 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
     size_t new_pending_size;
     char *newline;
     struct aesd_buffer_entry entry;
-    const char *oldptr;
 
     if (mutex_lock_interruptible(&dev->lock))
         return -ERESTARTSYS;
@@ -135,9 +134,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
     }
     memcpy((char *)entry.buffptr, dev->pending_write, entry.size);
 
-    oldptr = aesd_circular_buffer_add_entry(&dev->buffer, &entry);
-    if (oldptr)
-        kfree(oldptr);
+    aesd_circular_buffer_add_entry(&dev->buffer, &entry);
 
     if (entry.size < dev->pending_write_size) {
         size_t remaining = dev->pending_write_size - entry.size;
